@@ -80,7 +80,7 @@ mZoibRandom <- zoib(
     data = dataMelted , zero.inflation = TRUE , one.inflation = FALSE ,
     EUID = dataMelted$chrom , random = 13 , n.iter = 1000 , n.burn = 50
     )
-mmZoibRandom <- zoib(
+mZoibRandoma1a2 <- zoib(
     het ~ shape.index + absDist | shape.index + absDist | shape.index + absDist | 1 , joint = FALSE , 
     data = dataMelted , zero.inflation = TRUE , one.inflation = FALSE ,
     EUID = dataMelted$chrom , random = 13 , n.iter = 1000 , n.burn = 50
