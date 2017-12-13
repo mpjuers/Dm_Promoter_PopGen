@@ -1,4 +1,5 @@
 rm(list = ls())
+knitr::opts_chunk$set(echo = FALSE , warning = FALSE)
 library(reshape2)
 library(dplyr)
 library(ggplot2)
@@ -7,8 +8,8 @@ library(car)
 library(zoib)
 
 set.seed(42)
-data <- read.csv("../results/TSS_500_h_value_tables/all_h_CLARK_sequences.csv" , header = FALSE)
-siData <- read.table("../data/Dm_promoter/hoskins_tsr_table_SI.txt" , header = TRUE , sep = '\t')
+data <- read.csv("~/Projects/Dm_Promoter_PopGen/results/TSS_500_h_value_tables/all_h_CLARK_sequences.csv" , header = FALSE)
+siData <- read.table("~/Projects/Dm_Promoter_PopGen/data/Dm_promoter/hoskins_tsr_table_SI.txt" , header = TRUE , sep = '\t')
 names(data)[5:ncol(data)] <- as.character(-250:250)
 names(data)[1:4] <- c("chrom" , "tsrBeg" , "tsrEnd" , "strand")
 
@@ -79,7 +80,11 @@ mZoibRandom <- zoib(
     data = dataMelted , zero.inflation = TRUE , one.inflation = FALSE ,
     EUID = dataMelted$chrom , random = 13 , n.iter = 1000 , n.burn = 50
     )
-
+mmZoibRandom <- zoib(
+    het ~ shape.index + absDist | shape.index + absDist | shape.index + absDist | 1 , joint = FALSE , 
+    data = dataMelted , zero.inflation = TRUE , one.inflation = FALSE ,
+    EUID = dataMelted$chrom , random = 13 , n.iter = 1000 , n.burn = 50
+)
 resids <- data.frame(resids = as.numeric(mZoib$resid[[1]]) , pred = as.numeric(mZoib$ypred[[1]]))
 summ <- summary(mZoib$coeff)
 summRandom <- summary(mZoibRandom$coeff)
